@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+
+  web:
+    build:
+      context: .
+      target: development
+    command: yarn debug
+    ports:
+      - 8000:8000/tcp
+    volumes:
+      - .:/app/src
+      - /app/src/node_modules
