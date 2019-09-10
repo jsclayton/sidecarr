@@ -1,0 +1,10 @@
+.git/
+.github/
+deploy/
+docs/
+node_modules/
+tmp/
+docker-compose*
+Dockerfile*
+*.log
+*.md
