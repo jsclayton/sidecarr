@@ -4,31 +4,41 @@ services:
   - docker:19.03-dind
 
 variables:
-  TEST_TAG: test-$CI_COMMIT_SHORT_SHA
-  TEST_IMAGE: $CI_REGISTRY_IMAGE:test-$CI_COMMIT_SHORT_SHA
+  DEV_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  DEV_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
 
 stages:
   - Build
   - Test
+  - Deploy
 
-before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-
-Build Test Image:
+Build Development Image:
   stage: Build
   script:
-    - docker build --pull -t $TEST_IMAGE --target development .
-    - mkdir images
-    - docker save $TEST_IMAGE | gzip > images/$TEST_TAG.tar.gz
+    - docker build --pull -t $DEV_IMAGE --target development .
+    - mkdir tmp
+    - docker save $DEV_IMAGE | gzip > tmp/$DEV_TAG.tar.gz
   artifacts:
     expire_in: 10m
     paths:
-      - images
+      - tmp
 
 Unit Tests:
   stage: Test
   variables:
     GIT_STRATEGY: none
   script:
-    - docker load -i images/$TEST_TAG.tar.gz
-    - docker run --rm -e NODE_ENV=test $TEST_IMAGE yarn test
+    - docker load -i tmp/$DEV_TAG.tar.gz
+    - docker run --rm -e NODE_ENV=test $DEV_IMAGE yarn test
+
+Deploy:
+  stage: Deploy
+  only:
+    - master
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker load -i tmp/$DEV_TAG.tar.gz
+    - docker pull $RELEASE_IMAGE || true
+    - docker build --cache-from $DEV_IMAGE --cache-from $RELEASE_IMAGE -t $RELEASE_IMAGE .
+    - docker push $RELEASE_IMAGE
