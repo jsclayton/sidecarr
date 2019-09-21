@@ -5,12 +5,6 @@ import uuid from 'uuid';
 
 const app = express();
 
-declare module 'pino' {
-  interface LoggerOptions {
-    genReqId: () => string
-  }
-}
-
 app.use(pino({
   enabled: process.env.NODE_ENV !== 'test',
   genReqId: () => uuid.v4()
