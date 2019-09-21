@@ -5,8 +5,15 @@ import uuid from 'uuid';
 
 const app = express();
 
+declare module 'pino' {
+  interface LoggerOptions {
+    genReqId: () => string
+  }
+}
+
 app.use(pino({
-  enabled: process.env.NODE_ENV !== 'test'
+  enabled: process.env.NODE_ENV !== 'test',
+  genReqId: () => uuid.v4()
 }));
 app.use(express.json());
 app.use(express.urlencoded());
