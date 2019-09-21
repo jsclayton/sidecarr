@@ -15,6 +15,7 @@ COPY . .
 RUN tsc
 
 FROM node:12.10-alpine
+EXPOSE 8000
 ENV NODE_ENV=production PATH=/app/node_modules/.bin:$PATH
 WORKDIR /app
 COPY .yarnclean .yarnrc package.json yarn.lock ./
