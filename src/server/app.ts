@@ -9,6 +9,7 @@ app.use(pino({
   enabled: process.env.NODE_ENV !== 'test'
 }));
 app.use(express.json());
+app.use(express.urlencoded());
 
 app.post('/hooks/plex', routes.hooks.log);
 app.post('/hooks/radarr', routes.hooks.log);
