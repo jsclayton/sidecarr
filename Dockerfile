@@ -23,4 +23,4 @@ RUN yarn --frozen-lockfile --non-interactive && yarn cache clean
 WORKDIR /app/src
 COPY package.json ./
 COPY --from=build /app/src/dist ./dist
-RUN rm dist/jest.config.js /app/.yarnclean /app/.yarnrc /app/package.json /app/yarn.lock
+RUN rm /app/.yarnclean /app/.yarnrc /app/package.json /app/yarn.lock
