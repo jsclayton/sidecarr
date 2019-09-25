@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "actions:server": "node ./dist/server | pino-pretty",
-    "debug": "tsnd ./src/server | pino-pretty",
+    "debug": "tsnd -r dotenv/config ./src/server | pino-pretty",
     "docker:build": "docker build . -t plexbuddy:debug",
     "test": "jest"
   },
@@ -21,6 +21,7 @@
     "@types/pino": "5.8.10",
     "@types/supertest": "2.0.8",
     "@types/uuid": "3.4.5",
+    "dotenv": "8.1.0",
     "jest": "24.9.0",
     "supertest": "4.0.2",
     "ts-jest": "24.1.0",
@@ -28,6 +29,7 @@
     "typescript": "3.6.3"
   },
   "dependencies": {
+    "@slack/web-api": "5.1.0",
     "express": "4.17.1",
     "express-pino-logger": "4.0.0",
     "multer": "1.4.2",
