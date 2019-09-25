@@ -10,6 +10,33 @@ interface PlexWebhook {
   event: string,
   Account: {
     title: string
+  },
+  Metadata: {
+    title: string
+  },
+  Player: {
+    title: string
+  },
+  Server: {
+    title: string
+  }
+}
+
+function niceEvent(event: string) {
+
+  switch (event) {
+    case 'media.play':
+      return 'started watching';
+    case 'media.stop':
+      return 'stopped'
+    case 'media.pause':
+      return 'paused';
+    case 'media.resume':
+      return 'resumed';
+    case 'media.scrobble':
+      return 'scrobbled';
+    default:
+      return event
   }
 }
 
@@ -28,11 +55,8 @@ export default [
 
     await slack.chat.postMessage({
       channel: 'plex',
-      text: 'Received webhook from Plex',
-      attachments: [
-        { text: plexPayload.event },
-        { text: plexPayload.Account.title }
-      ]
+      text: `${plexPayload.Account.title} ${niceEvent(plexPayload.event)} ${plexPayload.Metadata.title} on ${plexPayload.Player.title}`,
+      username: plexPayload.Server.title
     })
 
     res.sendStatus(200);
