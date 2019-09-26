@@ -1,18 +1,62 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { default as multer } from 'multer';
-import { WebClient } from '@slack/web-api';
+import slack from '../../../services/slack';
 
 const upload = multer();
 
-const slack = new WebClient(process.env.SLACK_TOKEN);
+class Message {
 
-interface PlexWebhook {
+  [props: string]: unknown;
+
+  text: string;
+
+  private constructor(payload: Payload) {
+
+    this.text = `${payload.Account.title} ${this.niceEvent(payload.event)} ${payload.Metadata.title} on ${payload.Player.title}`;
+    this.username = payload.Server.title
+  }
+
+  static fromPayload(payload: Payload) : Message | undefined {
+
+    if (payload.Metadata.type === 'track') {
+      return;
+    }
+
+    return new Message(payload);
+  }
+
+  private niceEvent(event: string) {
+
+    switch (event) {
+      case 'media.play':
+        return 'started watching';
+      case 'media.stop':
+        return 'stopped'
+      case 'media.pause':
+        return 'paused';
+      case 'media.resume':
+        return 'resumed';
+      case 'media.scrobble':
+        return 'scrobbled';
+      default:
+        return event
+    }
+  }
+
+  async post(channel: string) {
+
+    await slack.chat.postMessage({ ...this, channel })
+  }
+}
+
+interface Payload {
   event: string,
   Account: {
     title: string
   },
   Metadata: {
-    title: string
+    title: string,
+    type: string
   },
   Player: {
     title: string
@@ -22,45 +66,34 @@ interface PlexWebhook {
   }
 }
 
-function niceEvent(event: string) {
-
-  switch (event) {
-    case 'media.play':
-      return 'started watching';
-    case 'media.stop':
-      return 'stopped'
-    case 'media.pause':
-      return 'paused';
-    case 'media.resume':
-      return 'resumed';
-    case 'media.scrobble':
-      return 'scrobbled';
-    default:
-      return event
+const asyncHandler = function(func: RequestHandler) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const result = func.call(undefined, req, res, next);
+    return result && result.catch ? result.catch(next) : result;
   }
 }
 
 export default [
   upload.single('thumb'),
-  async function (req: Request, res: Response) {
+  asyncHandler(async function (req: Request, res: Response) {
 
     const { body } = req;
     let { payload } = body;
     if (!payload) {
       return res.sendStatus(200);
     }
-    const plexPayload: PlexWebhook =  payload = JSON.parse(payload);
+    payload = JSON.parse(payload);
 
     req.log.info({ payload }, 'Webhook received');
 
-    await slack.chat.postMessage({
-      channel: 'plex',
-      text: `${plexPayload.Account.title} ${niceEvent(plexPayload.event)} ${plexPayload.Metadata.title} on ${plexPayload.Player.title}`,
-      username: plexPayload.Server.title
-    })
+    // Future hawtness: https://github.com/tc39/proposal-nullish-coalescing
+    const message = Message.fromPayload(payload);
+    if (message) {
+      await message.post('plex');
+    }
 
     res.sendStatus(200);
-  },
+  }),
   function (err: any, req: Request, res: Response, next: NextFunction) {
 
     req.log.error(err);
