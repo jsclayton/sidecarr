@@ -8,11 +8,21 @@ class Message {
 
   [props: string]: unknown;
 
-  text: string;
+  text: string = '';
 
   private constructor(payload: Payload) {
 
-    this.text = `${payload.Account.title} ${this.niceEvent(payload.event)} ${payload.Metadata.title} on ${payload.Player.title}`;
+    this.blocks = [
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: `*${payload.Account.title}* ${this.formatEvent(payload.event)} ${this.formatTitle(payload)} on ${payload.Player.title}`,
+          verbatim: true
+        }
+        
+      }
+    ]
     this.username = payload.Server.title
   }
 
@@ -25,11 +35,11 @@ class Message {
     return new Message(payload);
   }
 
-  private niceEvent(event: string) {
+  private formatEvent(event: string) {
 
     switch (event) {
       case 'media.play':
-        return 'started watching';
+        return 'is watching';
       case 'media.stop':
         return 'stopped'
       case 'media.pause':
@@ -41,6 +51,17 @@ class Message {
       default:
         return event
     }
+  }
+
+  private formatTitle(payload: Payload) : string {
+
+    const { Metadata: metadata, Server: server } = payload;
+    const title = metadata.type === 'episode' ? `${metadata.grandparentTitle}, ${metadata.title}` : metadata.title;
+    if (server.uuid) {
+      const url = `https://app.plex.tv/desktop/#!/server/${server.uuid}/details?key=%2Flibrary%2Fmetadata%2F${metadata.ratingKey}`
+      return `<${url}|${title}>`
+    }
+    return title;
   }
 
   async post(channel: string) {
@@ -55,6 +76,10 @@ interface Payload {
     title: string
   },
   Metadata: {
+    grandparentTitle: string,
+    parentTitle: string,
+    ratingKey: string,
+    skipParent: boolean,
     title: string,
     type: string
   },
@@ -62,7 +87,8 @@ interface Payload {
     title: string
   },
   Server: {
-    title: string
+    title: string,
+    uuid: string
   }
 }
 
