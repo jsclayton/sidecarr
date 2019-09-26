@@ -10,7 +10,7 @@ app.use(pino({
   genReqId: () => uuid.v4()
 }));
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 app.post('/hooks/plex', routes.hooks.plex);
 app.post('/hooks/radarr', routes.hooks.log);
