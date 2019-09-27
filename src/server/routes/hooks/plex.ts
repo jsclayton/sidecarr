@@ -17,10 +17,23 @@ class Message {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `*${payload.Account.title}* ${this.formatEvent(payload.event)} ${this.formatTitle(payload)} on ${payload.Player.title}`,
+          text: this.formatTitle(payload),
           verbatim: true
-        }
-        
+        },
+      },
+      {
+        type: 'context',
+        elements: [
+          {
+            type: 'image',
+            image_url: payload.Account.thumb,
+            alt_text: payload.Account.title
+          },
+          {
+            type: 'mrkdwn',
+            text: `*${payload.Account.title}* ${this.formatEvent(payload.event)} on *${payload.Player.title}*`
+          }
+        ]
       }
     ]
     this.username = payload.Server.title
@@ -56,12 +69,9 @@ class Message {
   private formatTitle(payload: Payload) : string {
 
     const { Metadata: metadata, Server: server } = payload;
-    const title = metadata.type === 'episode' ? `${metadata.grandparentTitle}, ${metadata.title}` : metadata.title;
-    if (server.uuid) {
-      const url = `https://app.plex.tv/desktop/#!/server/${server.uuid}/details?key=%2Flibrary%2Fmetadata%2F${metadata.ratingKey}`
-      return `<${url}|${title}>`
-    }
-    return title;
+    const title = metadata.type === 'episode' ? metadata.grandparentTitle : metadata.title;
+    const subtitle = metadata.type === 'episode' ? metadata.title : metadata.tagline;
+    return `*${title}*\n${subtitle}`;
   }
 
   async post(channel: string) {
@@ -73,6 +83,7 @@ class Message {
 interface Payload {
   event: string,
   Account: {
+    thumb: string,
     title: string
   },
   Metadata: {
@@ -80,6 +91,7 @@ interface Payload {
     parentTitle: string,
     ratingKey: string,
     skipParent: boolean,
+    tagline: string,
     title: string,
     type: string
   },
