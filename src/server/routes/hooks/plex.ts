@@ -1,6 +1,8 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { default as multer } from 'multer';
-import slack from '../../../services/slack';
+import asyncHandler from 'server/asyncHandler';
+import slack from 'services/slack';
+import * as plex from 'integrations/plex';
 
 const upload = multer();
 
@@ -10,7 +12,7 @@ class Message {
 
   text: string = '';
 
-  private constructor(payload: Payload) {
+  private constructor(payload: plex.WebhookPayload) {
 
     this.blocks = [
       {
@@ -39,7 +41,7 @@ class Message {
     this.username = payload.Server.title
   }
 
-  static fromPayload(payload: Payload) : Message | undefined {
+  static fromPayload(payload: plex.WebhookPayload) : Message | undefined {
 
     if (payload.Metadata.type === 'track') {
       return;
@@ -66,7 +68,7 @@ class Message {
     }
   }
 
-  private formatTitle(payload: Payload) : string {
+  private formatTitle(payload: plex.WebhookPayload) : string {
 
     const { Metadata: metadata, Server: server } = payload;
     const title = metadata.type === 'episode' ? metadata.grandparentTitle : metadata.title;
@@ -77,37 +79,6 @@ class Message {
   async post(channel: string) {
 
     await slack.chat.postMessage({ ...this, channel })
-  }
-}
-
-interface Payload {
-  event: string,
-  Account: {
-    thumb: string,
-    title: string
-  },
-  Metadata: {
-    grandparentTitle: string,
-    parentTitle: string,
-    ratingKey: string,
-    skipParent: boolean,
-    tagline: string,
-    title: string,
-    type: string
-  },
-  Player: {
-    title: string
-  },
-  Server: {
-    title: string,
-    uuid: string
-  }
-}
-
-const asyncHandler = function(func: RequestHandler) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const result = func.call(undefined, req, res, next);
-    return result && result.catch ? result.catch(next) : result;
   }
 }
 

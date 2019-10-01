@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "actions:server": "node ./dist/server | pino-pretty",
-    "debug": "tsnd -r dotenv/config ./src/server | pino-pretty",
+    "debug": "tsnd -r dotenv/config -r tsconfig-paths/register ./src/server | pino-pretty",
     "docker:build": "docker build . -t plexbuddy:debug",
     "test": "jest"
   },
@@ -26,6 +26,7 @@
     "supertest": "4.0.2",
     "ts-jest": "24.1.0",
     "ts-node-dev": "1.0.0-pre.43",
+    "tsconfig-paths": "3.9.0",
     "typescript": "3.6.3"
   },
   "dependencies": {
