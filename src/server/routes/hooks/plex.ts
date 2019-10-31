@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { default as multer } from 'multer';
-import asyncHandler from 'server/asyncHandler';
-import slack from 'services/slack';
-import * as plex from 'integrations/plex';
+import asyncHandler from '../../../server/asyncHandler';
+import slack from '../../../services/slack';
+import * as plex from '../../../integrations/plex';
 
 const upload = multer();
 

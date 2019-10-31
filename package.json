@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "actions:server": "node ./dist/server | pino-pretty",
-    "debug": "tsnd -r dotenv/config -r tsconfig-paths/register ./src/server | pino-pretty",
+    "debug": "tsnd -r dotenv/config ./src/server | pino-pretty",
     "docker:build": "docker build . -t plexbuddy:debug",
     "test": "jest"
   },
@@ -14,28 +14,28 @@
   },
   "devDependencies": {
     "@types/express": "4.17.1",
-    "@types/express-pino-logger": "4.0.1",
-    "@types/jest": "24.0.18",
+    "@types/express-pino-logger": "4.0.2",
+    "@types/jest": "24.0.21",
     "@types/multer": "1.3.10",
-    "@types/node": "12.7.8",
-    "@types/pino": "5.8.10",
+    "@types/node": "12.12.3",
+    "@types/pino": "5.8.13",
     "@types/supertest": "2.0.8",
-    "@types/uuid": "3.4.5",
-    "dotenv": "8.1.0",
+    "@types/uuid": "3.4.6",
+    "dotenv": "8.2.0",
     "jest": "24.9.0",
     "supertest": "4.0.2",
     "ts-jest": "24.1.0",
     "ts-node-dev": "1.0.0-pre.43",
     "tsconfig-paths": "3.9.0",
-    "typescript": "3.6.3"
+    "typescript": "3.6.4"
   },
   "dependencies": {
-    "@slack/web-api": "5.1.0",
+    "@slack/web-api": "5.3.0",
     "express": "4.17.1",
     "express-pino-logger": "4.0.0",
     "multer": "1.4.2",
-    "pino": "5.13.4",
-    "pino-pretty": "3.2.1",
+    "pino": "5.13.5",
+    "pino-pretty": "3.2.2",
     "uuid": "3.3.3"
   }
 }
