@@ -3,6 +3,7 @@ import { default as multer } from 'multer';
 import asyncHandler from '../../../server/asyncHandler';
 import slack from '../../../services/slack';
 import * as plex from '../../../integrations/plex';
+import { plainToClass } from 'class-transformer';
 
 const upload = multer();
 
@@ -28,22 +29,22 @@ class Message {
         elements: [
           {
             type: 'image',
-            image_url: payload.Account.thumb,
-            alt_text: payload.Account.title
+            image_url: payload.account.thumb,
+            alt_text: payload.account.title
           },
           {
             type: 'mrkdwn',
-            text: `*${payload.Account.title}* ${this.formatEvent(payload.event)} on *${payload.Player.title}*`
+            text: `*${payload.account.title}* ${this.formatEvent(payload.event)} on *${payload.player.title}*`
           }
         ]
       }
     ]
-    this.username = payload.Server.title
+    this.username = payload.server.title
   }
 
   static fromPayload(payload: plex.WebhookPayload) : Message | undefined {
 
-    if (payload.Metadata.type === 'track') {
+    if (payload.metadata.type === 'track') {
       return;
     }
 
@@ -70,7 +71,7 @@ class Message {
 
   private formatTitle(payload: plex.WebhookPayload) : string {
 
-    const { Metadata: metadata, Server: server } = payload;
+    const { metadata, server } = payload;
     const title = metadata.type === 'episode' ? metadata.grandparentTitle : metadata.title;
     const subtitle = metadata.type === 'episode' ? metadata.title : metadata.tagline;
     return `*${title}*\n${subtitle}`;
@@ -91,7 +92,7 @@ export default [
     if (!payload) {
       return res.sendStatus(200);
     }
-    payload = JSON.parse(payload);
+    payload = plainToClass(plex.WebhookPayload, JSON.parse(payload));
 
     req.log.info({ payload }, 'Webhook received');
 

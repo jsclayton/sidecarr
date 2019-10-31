@@ -31,11 +31,13 @@
   },
   "dependencies": {
     "@slack/web-api": "5.3.0",
+    "class-transformer": "0.2.3",
     "express": "4.17.1",
     "express-pino-logger": "4.0.0",
     "multer": "1.4.2",
     "pino": "5.13.5",
     "pino-pretty": "3.2.2",
+    "reflect-metadata": "0.1.13",
     "uuid": "3.3.3"
   }
 }
