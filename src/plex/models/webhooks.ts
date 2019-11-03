@@ -1,4 +1,4 @@
-import { Expose, Type, Transform } from 'class-transformer';
+import { Expose, Type, Transform, plainToClass } from 'class-transformer';
 import 'reflect-metadata';
 
 export class Account {
@@ -41,10 +41,18 @@ export class Server {
   uuid!: string;
 }
 
-export class WebhookPayload {
+export class Payload {
   event!: string;
   user!: boolean;
   owner!: boolean;
+
+  static parse(input: string | any) {
+
+    if (typeof input === 'string') {
+      input = JSON.parse(input);
+    }
+    return plainToClass(Payload, input)
+  }
 
   @Expose({ name: 'Account' })
   @Type(() => Account)

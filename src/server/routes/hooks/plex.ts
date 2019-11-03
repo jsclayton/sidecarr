@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { default as multer } from 'multer';
 import asyncHandler from '../../../server/asyncHandler';
 import slack from '../../../services/slack';
-import * as plex from '../../../integrations/plex';
-import { plainToClass } from 'class-transformer';
+import { Payload } from '../../../plex/models/webhooks';
 
 const upload = multer();
 
@@ -13,7 +12,7 @@ class Message {
 
   text: string = '';
 
-  private constructor(payload: plex.WebhookPayload) {
+  private constructor(payload: Payload) {
 
     this.blocks = [
       {
@@ -42,7 +41,7 @@ class Message {
     this.username = payload.server.title
   }
 
-  static fromPayload(payload: plex.WebhookPayload) : Message | undefined {
+  static fromPayload(payload: Payload) : Message | undefined {
 
     if (payload.metadata.type === 'track') {
       return;
@@ -69,7 +68,7 @@ class Message {
     }
   }
 
-  private formatTitle(payload: plex.WebhookPayload) : string {
+  private formatTitle(payload: Payload) : string {
 
     const { metadata, server } = payload;
     const title = metadata.type === 'episode' ? metadata.grandparentTitle : metadata.title;
@@ -92,7 +91,7 @@ export default [
     if (!payload) {
       return res.sendStatus(200);
     }
-    payload = plainToClass(plex.WebhookPayload, JSON.parse(payload));
+    payload = Payload.parse(payload);
 
     req.log.info({ payload }, 'Webhook received');
 
