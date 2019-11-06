@@ -67,3 +67,4 @@ WebStorm
 docker-compose.override.yml
 
 dist/
+data/

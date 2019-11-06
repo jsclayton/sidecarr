@@ -15,6 +15,7 @@ COPY . .
 RUN tsc
 
 FROM node:12.13-alpine
+VOLUME ["/config"]
 EXPOSE 8000
 ENV NODE_ENV=production PATH=/app/node_modules/.bin:$PATH
 WORKDIR /app

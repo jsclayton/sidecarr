@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "license": "UNLICENSED",
   "scripts": {
-    "actions:server": "node ./dist/server | pino-pretty",
-    "debug": "tsnd -r dotenv/config ./src/server | pino-pretty",
+    "actions:server": "node ./dist/server --config /config | pino-pretty",
+    "debug": "tsnd -r dotenv/config ./src/server --config /config | pino-pretty",
     "docker:build": "docker build . -t plexbuddy:debug",
     "test": "jest"
   },
@@ -38,6 +38,8 @@
     "pino": "5.13.5",
     "pino-pretty": "3.3.0",
     "reflect-metadata": "0.1.13",
+    "sqlite3": "4.1.0",
+    "typeorm": "0.2.20",
     "uuid": "3.3.3"
   }
 }

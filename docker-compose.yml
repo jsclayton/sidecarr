@@ -12,3 +12,4 @@ services:
     volumes:
       - .:/app/src
       - /app/src/node_modules
+      - ./data:/config
