@@ -309,10 +309,10 @@
   resolved "https://registry.yarnpkg.com/@slack/types/-/types-1.2.1.tgz#132d50d02efb452c9a58573964b22f5f18ab9b1a"
   integrity sha512-NyGh7MibW+a0OHkwwOPlv63hC639dzQdkFy4dj0tl4sAdZR4OBaE/OhXixKhCzcT3kJsPXaQmvkUN7sqSf52iA==
 
-"@slack/web-api@5.3.0":
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-5.3.0.tgz#495a5a07ec700aca8281252af4a8e1d3e2fa7a0a"
-  integrity sha512-VxFtA4X1t2qc7Mk7zbtI8mpx/HAU3QbnjjVkZv1D5MV3w7OVIJ0n/N9UjO1B6k1Xi8PHAdcJ4uCIV4BP4U/VsA==
+"@slack/web-api@5.4.0":
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-5.4.0.tgz#ec6a982045c9a6c2977105ba556434538f6cb41d"
+  integrity sha512-iCP7tED6pmGSWz0ZKjZPPpgSOjphmsgo+VMdqaLLnb8eRggsjswKJDruHBtoWENLVySq05qWFFeYtGG36Xv6RQ==
   dependencies:
     "@slack/logger" ">=1.0.0 <3.0.0"
     "@slack/types" "^1.2.1"
@@ -3470,10 +3470,10 @@ pino-http@^4.0.0:
     pino "^5.0.0"
     pino-std-serializers "^2.4.0"
 
-pino-pretty@3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/pino-pretty/-/pino-pretty-3.2.2.tgz#e252f964f99a0a3bd34f4a484bb4e202632eaaad"
-  integrity sha512-2SP++Wbo4EsH5RpLhcsYHOR/8CMTIJWZpU0aPiVK0Wq8SrRMQ9oHQNffVK5ZyDFZMtSuTdFCVfLVNFmtFMDEeA==
+pino-pretty@3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/pino-pretty/-/pino-pretty-3.3.0.tgz#7b1be8fbc25f3a3488db0cf885dd2c0c4d1b4981"
+  integrity sha512-aoQWRJscJrKG/YH8GKqvbYalp8rr0KDn/SUmt2XK7q3ovA8GTN6OqvomPan7soNXLUKuYJc4UQdh0Fx+15yQpw==
   dependencies:
     "@hapi/bourne" "^1.3.2"
     args "^5.0.1"
