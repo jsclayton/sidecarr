@@ -2,23 +2,38 @@ import 'reflect-metadata';
 import http from 'http';
 import { createConnection } from 'typeorm';
 import Message from '../models/database/slack/Message';
+import { argv } from 'yargs';
+import log from '../log';
 
 import app from './app';
 
 const server = http.createServer(app);
 (async () => {
 
-  await createConnection({
+  let database = ':memory:';
+
+  const configPath = argv.config;
+  if (configPath) {
+    database = `${configPath}/plexbuddy.db`;
+    log.info(`Using database at ${database}`);
+  } else {
+    log.warn(`Using in memory database`);
+  }
+
+  const connection = await createConnection({
     type: 'sqlite',
-    database: '/config/plexbuddy.db',
+    database,
     entities: [Message],
     synchronize: true
   });
 
-  server.listen(8000, () => {
-
-    console.log('Listening at http://127.0.0.1:8000');
+  process.once('SIGINT', () => {
+    log.info('Shutting down...');
+    server.close();
+    connection.close()
   });
+
+  server.listen(8000, () => log.info('Listening at http://127.0.0.1:8000'));
 })();
 
 export default server;
