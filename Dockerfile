@@ -1,5 +1,5 @@
 FROM node:12.13-alpine as development
-VOLUME ["/config"]
+VOLUME ["/config", "/pms"]
 ENV NODE_ENV=development PATH=/app/node_modules/.bin:$PATH
 WORKDIR /app
 COPY .yarnclean .yarnrc package.json yarn.lock ./
@@ -18,7 +18,7 @@ COPY . .
 RUN tsc
 
 FROM node:12.13-alpine
-VOLUME ["/config"]
+VOLUME ["/config", "/pms"]
 EXPOSE 8000
 ENV NODE_ENV=production PATH=/app/node_modules/.bin:$PATH
 WORKDIR /app

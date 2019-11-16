@@ -10,6 +10,14 @@ import app from './app';
 const server = http.createServer(app);
 (async () => {
 
+  log.info(process.env, 'Server starting up...');
+
+  if (argv.pms) {
+    log.info(`Using PMS at ${argv.pms}`);
+  } else {
+    log.warn('No PMS configured');
+  }
+
   let database = ':memory:';
 
   const configPath = argv.config;
