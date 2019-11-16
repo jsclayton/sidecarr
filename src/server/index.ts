@@ -4,6 +4,7 @@ import { createConnection } from 'typeorm';
 import Message from '../models/database/slack/Message';
 import { argv } from 'yargs';
 import log from '../log';
+import { URL } from '../constants';
 
 import app from './app';
 
@@ -41,7 +42,7 @@ const server = http.createServer(app);
     connection.close()
   });
 
-  server.listen(8000, () => log.info('Listening at http://127.0.0.1:8000'));
+  server.listen(8000, () => log.info(`Listening at ${URL()}`));
 })();
 
 export default server;

@@ -15,7 +15,7 @@ WORKDIR /app
 COPY --from=development /app/node_modules /app/node_modules
 WORKDIR /app/src
 COPY . .
-RUN tsc
+RUN tsc && cp src/server/routes/mask.svg dist/server/routes/
 
 FROM node:12.13-alpine
 VOLUME ["/config", "/pms"]

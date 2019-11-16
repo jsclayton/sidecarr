@@ -12,6 +12,7 @@ app.use(pino({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/avatar', routes.avatar);
 app.post('/hooks/plex', routes.hooks.plex);
 app.post('/hooks/radarr', routes.hooks.log);
 app.post('/hooks/sonarr', routes.hooks.log);

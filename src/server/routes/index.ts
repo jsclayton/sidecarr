@@ -1,3 +1,4 @@
+import avatar from './avatar';
 import * as hooks from './hooks';
 
-export { hooks };
+export { avatar, hooks };

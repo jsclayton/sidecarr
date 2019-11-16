@@ -1,6 +1,7 @@
 import { WebClient, WebAPICallResult } from '@slack/web-api';
 import { Payload } from '../plex/models/webhooks';
 import { Message } from '../models/database/slack';
+import { URL } from '../constants';
 
 const slack = new WebClient(process.env.SLACK_TOKEN);
 
@@ -29,7 +30,7 @@ export class WebhookMessage {
         elements: [
           {
             type: 'image',
-            image_url: payload.account.thumb,
+            image_url: URL(`/avatar?url=${encodeURIComponent(payload.account.thumb)}`),
             alt_text: payload.account.title
           },
           {
