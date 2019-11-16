@@ -44,7 +44,7 @@ export class WebhookMessage {
 
   static fromPayload(payload: Payload): WebhookMessage | undefined {
 
-    if (payload.metadata.type === 'track') {
+    if (payload.event !== 'media.scrobble' || payload.metadata.type === 'track') {
       return;
     }
 
