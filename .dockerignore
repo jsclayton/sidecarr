@@ -9,3 +9,4 @@ Dockerfile*
 *.log
 *.md
 data/
+.DS_Store

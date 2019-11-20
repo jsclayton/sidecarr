@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "UNLICENSED",
   "scripts": {
-    "debug": "./bin/tsnd-pretty.sh -r dotenv/config src/server",
+    "debug": "./bin/exec-pretty.sh tsnd -r dotenv/config src/server",
     "test": "jest"
   },
   "type": "module",
@@ -24,7 +24,6 @@
     "@types/yargs": "13.0.3",
     "dotenv": "8.2.0",
     "jest": "24.9.0",
-    "pino-pretty": "3.3.0",
     "supertest": "4.0.2",
     "ts-jest": "24.1.0",
     "ts-node-dev": "1.0.0-pre.44",
@@ -39,6 +38,8 @@
     "got": "9.6.0",
     "multer": "1.4.2",
     "pino": "5.13.6",
+    "pino-datadog": "jsclayton/pino-datadog#dev-dependencies",
+    "pino-pretty": "3.3.0",
     "reflect-metadata": "0.1.13",
     "sharp": "0.23.2",
     "sqlite3": "4.1.0",
