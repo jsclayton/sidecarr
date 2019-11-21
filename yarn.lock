@@ -3878,9 +3878,9 @@ pinkie@^2.0.0:
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
   integrity sha1-clVrgM+g1IqXToDnckjoDtT3+HA=
 
-pino-datadog@jsclayton/pino-datadog#dev-dependencies:
+pino-datadog@jsclayton/pino-datadog#working:
   version "1.1.1"
-  resolved "https://codeload.github.com/jsclayton/pino-datadog/tar.gz/89c3a555acde78ba76fcc088ce34cdad35e0eb40"
+  resolved "https://codeload.github.com/jsclayton/pino-datadog/tar.gz/48446f0547fb704842c50fe079e4a8d01c695e48"
   dependencies:
     axios "^0.19.0"
     batch2 "^1.0.6"
