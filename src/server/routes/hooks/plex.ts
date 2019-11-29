@@ -17,7 +17,7 @@ export default [
     }
     payload = Payload.parse(payload);
 
-    req.log.info({ payload }, 'Webhook received');
+    req.log.info({ payload }, `Plex ${payload.event} (${payload.account.title}): ${payload.metadata.title}`);
 
     // Future hawtness: https://github.com/tc39/proposal-nullish-coalescing
     const message = WebhookMessage.fromPayload(payload);
