@@ -67,7 +67,7 @@ export default function (req: Request, res: Response) {
   const { eventType, movie } = payload;
   const { title } = movie;
 
-  req.log.info({ payload, event: eventType}, `Radarr ${eventType.toLowerCase()}: ${title}`);
+  req.log.info({ payload: { ...payload, event: eventType.toLowerCase() } }, `Radarr ${eventType.toLowerCase()}: ${title}`);
 
   res.sendStatus(200);
 }
