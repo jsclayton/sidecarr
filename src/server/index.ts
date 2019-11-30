@@ -36,10 +36,12 @@ const server = http.createServer(app);
     synchronize: true
   });
 
-  process.once('SIGINT', () => {
+  process.on('SIGINT', () => process.exit());
+  process.on('SIGTERM', () => process.exit(0));
+  process.on('exit', () => {
     log.info('Shutting down...');
     server.close();
-    connection.close()
+    connection.close();
   });
 
   server.listen(8000, () => log.info(`Listening at ${URL()}`));
