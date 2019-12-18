@@ -81,8 +81,8 @@ export class WebhookMessage {
   async post(channel: string) {
 
     const result = await slack.chat.postMessage({ text: '', ...this, channel }) as ChatPostMessageResult;
-    const message = Message.create(result);
-    await message.save();
+    // const message = Message.create(result);
+    // await message.save();
   }
 }
 

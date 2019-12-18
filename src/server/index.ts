@@ -19,32 +19,31 @@ const server = http.createServer(app);
     log.warn('No PMS configured');
   }
 
-  let database = ':memory:';
+  // let database = ':memory:';
 
-  const configPath = argv.config;
-  if (configPath) {
-    database = `${configPath}/plexbuddy.db`;
-    log.info(`Using database at ${database}`);
-  } else {
-    log.warn(`Using in memory database`);
-  }
+  // const configPath = argv.config;
+  // if (configPath) {
+  //   database = `${configPath}/plexbuddy.db`;
+  //   log.info(`Using database at ${database}`);
+  // } else {
+  //   log.warn(`Using in memory database`);
+  // }
 
-  const connection = await createConnection({
-    type: 'sqlite',
-    database,
-    entities: [Message],
-    synchronize: true
-  });
+  // const connection = await createConnection({
+  //   type: 'sqlite',
+  //   database,
+  //   entities: [Message],
+  //   synchronize: true
+  // });
 
-  process.on('SIGINT', () => process.exit());
-  process.on('SIGTERM', () => process.exit(0));
   process.on('exit', () => {
-    log.info('Shutting down...');
+    log.info('Server shutting down...');
     server.close();
-    connection.close();
+    log.flush();
+    // connection.close();
   });
 
-  server.listen(8000, () => log.info(`Listening at ${URL()}`));
+  server.listen(8000, () => log.info(`Server listening at ${URL()}`));
 })();
 
 export default server;
