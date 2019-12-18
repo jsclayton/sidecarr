@@ -9,8 +9,8 @@ const MASK = sharp(fs.readFileSync(path.resolve(__dirname, './mask.svg')));
 
 export default asyncHandler(async function (req: Request, res: Response) {
 
-  const response = await got.get(req.query.url, { encoding: null });
-  const avatar = sharp(response.body);
+  const response = await got.get(req.query.url).buffer();
+  const avatar = sharp(response);
 
   const mask = await MASK.clone().resize(100, 100).toBuffer();
 
