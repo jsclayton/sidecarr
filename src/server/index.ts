@@ -5,6 +5,7 @@ import Message from '../models/database/slack/Message';
 import { argv } from 'yargs';
 import log from '../log';
 import { URL } from '../constants';
+import config from '../config';
 
 import app from './app';
 

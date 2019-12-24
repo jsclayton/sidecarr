@@ -33,6 +33,7 @@
   "dependencies": {
     "@slack/web-api": "5.6.0",
     "class-transformer": "0.2.3",
+    "conf": "6.2.0",
     "express": "4.17.1",
     "express-pino-logger": "4.0.0",
     "got": "10.0.4",

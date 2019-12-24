@@ -1,3 +1,5 @@
-export const URL = (path = '') => {
-  return (process.env.BASE_URL || 'http://localhost:8000') + path;
+import config from './config';
+
+export const URL = (path: string = '') => {
+  return `${config.server.baseUrl}${path}`;
 }

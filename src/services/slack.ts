@@ -2,8 +2,9 @@ import { WebClient, WebAPICallResult } from '@slack/web-api';
 import { Payload } from '../plex/models/webhooks';
 import { Message } from '../models/database/slack';
 import { URL } from '../constants';
+import config from '../config';
 
-const slack = new WebClient(process.env.SLACK_TOKEN);
+const slack = new WebClient(config.slack.token);
 
 interface ChatPostMessageResult extends WebAPICallResult {
   channel: string;
