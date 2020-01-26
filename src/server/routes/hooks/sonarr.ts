@@ -63,6 +63,9 @@ export default function (req: Request, res: Response) {
 
   const payload = req.body as SonarrPayload;
   const { episodes, eventType, series } = payload;
+  if (!series) {
+    return res.sendStatus(200);
+  }
   const { title } = series;
   const suffix = episodes ? ` ${episodes.map((ep) => `s${ep.seasonNumber.toString().padStart(2, '0')}e${ep.episodeNumber.toString().padStart(2, '0')}`).join(', ')}` : '';
 

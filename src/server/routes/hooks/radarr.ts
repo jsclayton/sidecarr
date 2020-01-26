@@ -65,6 +65,9 @@ export default function (req: Request, res: Response) {
 
   const payload = req.body as RadarrPayload;
   const { eventType, movie } = payload;
+  if (!movie) {
+    return res.sendStatus(200);
+  }
   const { title } = movie;
 
   req.log.info({ payload: { ...payload, event: eventType.toLowerCase() } }, `Radarr ${eventType.toLowerCase()}: ${title}`);
