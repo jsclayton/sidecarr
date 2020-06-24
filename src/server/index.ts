@@ -37,6 +37,8 @@ const server = http.createServer(app);
   //   synchronize: true
   // });
 
+  process.on('SIGINT', () => process.exit());
+  process.on('SIGTERM', () => process.exit(0));
   process.on('exit', () => {
     log.info('Server shutting down...');
     server.close();

@@ -1,13 +1,13 @@
 import { default as express } from 'express';
 import * as routes from './routes';
 import pino from 'express-pino-logger';
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 const app = express();
 
 app.use(pino({
   enabled: process.env.NODE_ENV !== 'test',
-  genReqId: () => uuid.v4()
+  genReqId: () => uuid()
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

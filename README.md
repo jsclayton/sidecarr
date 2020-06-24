@@ -12,3 +12,7 @@ services:
     environment:
       - TZ=America/Denver
 ```
+
+## TypeScript Nuances
+
+[https://stackoverflow.com/a/61305579/30826](https://stackoverflow.com/a/61305579/30826)
