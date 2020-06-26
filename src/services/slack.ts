@@ -17,6 +17,17 @@ export class WebhookMessage {
 
   private constructor(payload: Payload) {
 
+    const { account } = payload;
+
+    let imageElement;
+    if (account) {
+      imageElement = {
+        type: 'image',
+        image_url: URL(`/avatar?url=${encodeURIComponent(account.thumb as string)}`),
+        alt_text: payload.account?.title
+      }
+    }
+
     this.blocks = [
       {
         type: 'section',
@@ -29,24 +40,20 @@ export class WebhookMessage {
       {
         type: 'context',
         elements: [
-          {
-            type: 'image',
-            image_url: URL(`/avatar?url=${encodeURIComponent(payload.account.thumb)}`),
-            alt_text: payload.account.title
-          },
+          imageElement,
           {
             type: 'mrkdwn',
-            text: `*${payload.account.title}* ${this.formatEvent(payload.event)} on *${payload.player.title}*`
+            text: `*${payload.account?.title}* ${this.formatEvent(payload.event)} on *${payload.player?.title}*`
           }
-        ]
+        ].filter(Boolean)
       }
     ]
-    this.username = payload.server.title
+    this.username = payload.server?.title
   }
 
   static fromPayload(payload: Payload): WebhookMessage | undefined {
 
-    if (payload.event !== 'media.scrobble' || payload.metadata.type === 'track') {
+    if (payload.event !== 'media.scrobble' || payload.metadata?.type === 'track') {
       return;
     }
 
@@ -74,8 +81,8 @@ export class WebhookMessage {
   private formatTitle(payload: Payload): string {
 
     const { metadata, server } = payload;
-    const title = metadata.type === 'episode' ? metadata.grandparentTitle : metadata.title;
-    const subtitle = metadata.type === 'episode' ? metadata.title : metadata.tagline;
+    const title = metadata?.type === 'episode' ? metadata.grandparentTitle : metadata?.title;
+    const subtitle = metadata?.type === 'episode' ? metadata.title : metadata?.tagline;
     return `*${title}*\n${subtitle}`;
   }
 

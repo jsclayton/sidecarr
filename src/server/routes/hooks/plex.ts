@@ -11,13 +11,13 @@ const upload = multer();
 
 const scrobbleQueue = new PQueue({ concurrency: 1 });
 
-mq.subscribe('media.scrobble', (data) => {
+mq.subscribe('plex:media:scrobble', (data) => {
 
   scrobbleQueue.add(async () => {
 
     const payload = data as Payload;
     
-    log.debug(`Processing scrobble (${payload.account.title}): ${payload.metadata.title}`);
+    log.debug(`Processing scrobble (${payload.account?.title}): ${payload.metadata?.title}`);
 
     // Future hawtness: https://github.com/tc39/proposal-nullish-coalescing
     const message = WebhookMessage.fromPayload(payload);
@@ -25,7 +25,7 @@ mq.subscribe('media.scrobble', (data) => {
       await message.post('plex');
     }
 
-    log.debug(`Processed scrobble (${payload.account.title}): ${payload.metadata.title}`);
+    log.debug(`Processed scrobble (${payload.account?.title}): ${payload.metadata?.title}`);
   })
 });
 
@@ -34,15 +34,14 @@ export default [
   asyncHandler(async function (req: Request, res: Response) {
 
     const { body } = req;
-    let { payload } = body;
-    if (!payload) {
+    if (!body.payload) {
       return res.sendStatus(200);
     }
-    payload = Payload.parse(payload);
+    const payload = Payload.parse(body.payload);
 
-    req.log.info({ payload }, `Plex ${payload.event} (${payload.account.title}): ${payload.metadata.title}`);
+    req.log.info({ payload }, `Plex ${payload.event} (${payload.account?.title}): ${payload.metadata?.title}`);
 
-    mq.publish(payload.event, payload)
+    mq.publish(`plex:${payload.event?.replace('.', ':')}`, payload)
 
     res.sendStatus(200);
   }),
