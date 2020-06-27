@@ -7,7 +7,8 @@ const app = express();
 
 app.use(pino({
   enabled: process.env.NODE_ENV !== 'test',
-  genReqId: () => uuid()
+  genReqId: () => uuid(),
+  level: 'debug',
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

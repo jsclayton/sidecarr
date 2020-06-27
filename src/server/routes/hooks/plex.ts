@@ -11,22 +11,12 @@ const upload = multer();
 
 const scrobbleQueue = new PQueue({ concurrency: 1 });
 
-mq.subscribe('plex:media:scrobble', (data) => {
+mq.subscribe('Scrobble to Slack', 'plex:media:scrobble', async (data) => {
 
-  scrobbleQueue.add(async () => {
+  const payload = data as Payload;
 
-    const payload = data as Payload;
-    
-    log.debug(`Processing scrobble (${payload.account?.title}): ${payload.metadata?.title}`);
-
-    // Future hawtness: https://github.com/tc39/proposal-nullish-coalescing
-    const message = WebhookMessage.fromPayload(payload);
-    if (message) {
-      await message.post('plex');
-    }
-
-    log.debug(`Processed scrobble (${payload.account?.title}): ${payload.metadata?.title}`);
-  })
+  const message = WebhookMessage.fromPayload(payload);
+  await message?.post('plex');
 });
 
 export default [
@@ -39,9 +29,9 @@ export default [
     }
     const payload = Payload.parse(body.payload);
 
-    req.log.info({ payload }, `Plex ${payload.event} (${payload.account?.title}): ${payload.metadata?.title}`);
+    req.log.debug({ payload }, `Plex ${payload.event} (${payload.account?.title}): ${payload.metadata?.title}`);
 
-    mq.publish(`plex:${payload.event?.replace('.', ':')}`, payload)
+    mq.publish(`plex:${payload.event.replace('.', ':')}`, payload)
 
     res.sendStatus(200);
   }),
