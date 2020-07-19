@@ -7,19 +7,15 @@ const file = new Conf({
 
 export interface Config {
 
+  readonly pms?: PmsConfig;
   readonly server: ServerConfig;
-  readonly slack: SlackConfig;
+  readonly slack?: SlackConfig;
 }
 
-class RootConfigImpl implements Config {
+export interface PmsConfig {
 
-  readonly server: ServerConfig;
-  readonly slack: SlackConfig;
-
-  constructor() {
-    this.server = new ServerConfigImpl();
-    this.slack = new SlackConfigImpl();
-  }
+  readonly baseUrl?: string;
+  readonly token?: string;
 }
 
 export interface ServerConfig {
@@ -27,28 +23,24 @@ export interface ServerConfig {
   readonly baseUrl: string;
 }
 
-class ServerConfigImpl implements ServerConfig {
-
-  readonly baseUrl: string;
-
-  constructor() {
-    this.baseUrl = process.env.BASE_URL || file.get('server.baseUrl') || 'http://localhost:8000';
-  }
-}
-
 export interface SlackConfig {
 
   readonly token?: string;
 }
 
-class SlackConfigImpl implements SlackConfig {
+const config: Config = {
 
-  readonly token?: string;
+  pms: {
+    get baseUrl () { return process.env.SIDECARR_PMS_BASE_URL || file.get('pms.baseUrl') || 'http://localhost:32400'; },
+    get token () { return process.env.SIDECARR_PMS_TOKEN || file.get('pms.token'); }
+  },
 
-  constructor() {
-    this.token = process.env.SLACK_TOKEN || file.get('slack.token')
+  server: {
+    get baseUrl () { return process.env.SIDECARR_BASE_URL || file.get('server.baseUrl') || 'http://localhost:8000'; }
+  },
+
+  slack: {
+    get token() { return  process.env.SIDECARR_SLACK_TOKEN || file.get('slack.token'); }
   }
 }
-
-const config: Config = new RootConfigImpl();
 export default config;

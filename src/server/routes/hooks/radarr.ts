@@ -1,3 +1,5 @@
+import asyncHandler from '../../../server/asyncHandler';
+import { scanDirectory } from '../../../services/pms';
 import { Request, Response } from 'express';
 
 interface RadarrPayload {
@@ -61,7 +63,7 @@ interface RadarrPayload {
   }
 }
 
-export default function (req: Request, res: Response) {
+export default asyncHandler(async function (req: Request, res: Response) {
 
   const payload = req.body as RadarrPayload;
   const { eventType, movie } = payload;
@@ -72,5 +74,9 @@ export default function (req: Request, res: Response) {
 
   req.log.info({ payload: { ...payload, event: eventType.toLowerCase() } }, `Radarr ${eventType.toLowerCase()}: ${title}`);
 
+  if (eventType.toLowerCase() === 'download') {
+    await scanDirectory(movie.folderPath);
+  }
+
   res.sendStatus(200);
-}
+})

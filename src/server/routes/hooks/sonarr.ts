@@ -1,3 +1,6 @@
+import path from 'path';
+import asyncHandler from '../../../server/asyncHandler';
+import { scanDirectory } from '../../../services/pms';
 import { Request, Response } from 'express';
 
 interface SonarrPayload {
@@ -59,10 +62,10 @@ interface SonarrPayload {
   }
 }
 
-export default function (req: Request, res: Response) {
+export default asyncHandler(async function (req: Request, res: Response) {
 
   const payload = req.body as SonarrPayload;
-  const { episodes, eventType, series } = payload;
+  const { episodeFile, episodes, eventType, series } = payload;
   if (!series) {
     return res.sendStatus(200);
   }
@@ -71,5 +74,9 @@ export default function (req: Request, res: Response) {
 
   req.log.info({ payload: { ...payload, event: eventType.toLowerCase() } }, `Sonarr ${eventType.toLowerCase()}: ${title}${suffix}`);
 
+  if (eventType.toLowerCase() === 'download' && episodeFile) {
+    await scanDirectory(path.dirname(path.join(series.path, episodeFile.relativePath)));
+  }
+
   res.sendStatus(200);
-}
+})

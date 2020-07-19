@@ -4,7 +4,7 @@ import { Message } from '../models/database/slack';
 import { URL } from '../constants';
 import config from '../config';
 
-const slack = new WebClient(config.slack.token);
+const slack = new WebClient(config.slack?.token);
 
 interface ChatPostMessageResult extends WebAPICallResult {
   channel: string;
