@@ -2,6 +2,20 @@ import config from '../config';
 import logger from '../log';
 import got from 'got';
 
+interface Sections {
+  MediaContainer: {
+    Directory?: [
+      {
+        key: string,
+        Location: [{
+          path: string
+        }],
+        title: string
+      }
+    ]
+  }
+}
+
 const log = logger.child({
   tags: {
     service: 'pms'
@@ -18,19 +32,10 @@ const client = got.extend({
 
 export async function scanDirectory(path: string): Promise<void> {
 
-  interface Sections {
-    MediaContainer: {
-      Directory?: [
-        {
-          key: string,
-          Location: [{
-            path: string
-          }],
-          title: string
-        }
-      ]
-    }
+  if (!config.pms) {
+    return;
   }
+
   const { body: sections } = await client.get<Sections>('library/sections');
   for (const directory of sections.MediaContainer.Directory || []) {
 

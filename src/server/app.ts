@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.all('/ping', routes.ping);
 app.get('/avatar', routes.avatar);
+app.post('/hooks/lidarr', routes.hooks.lidarr);
 app.post('/hooks/plex', routes.hooks.plex);
 app.post('/hooks/radarr', routes.hooks.radarr);
 app.post('/hooks/sonarr', routes.hooks.sonarr);
