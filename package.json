@@ -42,14 +42,14 @@
     "pino-datadog": "1.2.1",
     "pino-pretty": "4.0.0",
     "reflect-metadata": "0.1.13",
-    "sharp": "0.25.4",
+    "sharp": "0.28.3",
     "sqlite3": "4.2.0",
     "typeorm": "0.2.25",
     "uuid": "8.2.0",
     "yargs": "15.3.1"
   },
   "volta": {
-    "node": "12.18.4",
+    "node": "16.6.1",
     "yarn": "1.22.11"
   }
 }

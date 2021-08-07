@@ -1,4 +1,4 @@
-FROM node:12.18-alpine3.12 as development
+FROM node:16.6.1-alpine3.14 as development
 VOLUME ["/config", "/pms"]
 ENV NODE_ENV=development PATH=/app/node_modules/.bin:$PATH
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY . .
 CMD ["tsnd", "src/server"]
 ENTRYPOINT ["bin/exec-pretty.sh"]
 
-FROM node:12.18-alpine3.12 as build
+FROM node:16.6.1-alpine3.14 as build
 ENV NODE_ENV=development PATH=/app/node_modules/.bin:$PATH
 WORKDIR /app
 COPY --from=development /app/node_modules /app/node_modules
@@ -19,7 +19,7 @@ WORKDIR /app/src
 COPY . .
 RUN tsc
 
-FROM node:12.18-alpine3.12
+FROM node:16.6.1-alpine3.14
 VOLUME ["/config", "/pms"]
 EXPOSE 8000
 ENV NODE_ENV=production PATH=/app/node_modules/.bin:$PATH
