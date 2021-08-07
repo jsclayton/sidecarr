@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "engines": {
-    "node": ">= 12.18.0"
+    "node": ">= 16.6.0"
   },
   "devDependencies": {
     "@types/express": "4.17.6",
