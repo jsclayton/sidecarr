@@ -1,7 +1,7 @@
 {
-  "name": "plexbuddy",
+  "name": "sidecarr",
   "version": "0.1.0",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "debug": "./bin/exec-pretty.sh tsnd -r dotenv/config src/server",
     "test": "jest"
