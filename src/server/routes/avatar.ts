@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../../server/asyncHandler';
-import fs from 'fs';
 import got from 'got';
-import path from 'path';
 import sharp from 'sharp';
 
 const MASK = sharp(Buffer.from(`

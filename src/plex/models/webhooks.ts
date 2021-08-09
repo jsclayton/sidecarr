@@ -15,15 +15,15 @@ export class Metadata {
   }
 
   @Type(() => Date)
-  @Transform((value) => new Date(value * 1000))
+  @Transform(({ value }) => new Date(value * 1000))
   addedAt?: Date;
 
   @Type(() => Date)
-  @Transform((value) => new Date(value * 1000))
+  @Transform(({ value }) => new Date(value * 1000))
   updatedAt?: Date;
 
   @Type(() => Date)
-  @Transform((value) => new Date(value * 1000))
+  @Transform(({ value }) => new Date(value * 1000))
   lastViewedAt?: Date;
 
   grandparentTitle?: string;

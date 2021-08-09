@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "debug": "./bin/exec-pretty.sh tsnd -r dotenv/config src/server",
-    "test": "jest"
+    "test": "jest",
+    "test:types": "yarn tsc"
   },
   "engines": {
     "node": ">= 16.6.0"
@@ -12,7 +13,7 @@
   "devDependencies": {
     "@types/express": "4.17.13",
     "@types/express-pino-logger": "4.0.2",
-    "@types/jest": "26.0.3",
+    "@types/jest": "26.0.24",
     "@types/multer": "1.4.7",
     "@types/node": "16.4.13",
     "@types/p-queue": "3.2.1",
@@ -31,7 +32,7 @@
   },
   "dependencies": {
     "@slack/web-api": "5.10.0",
-    "class-transformer": "0.2.3",
+    "class-transformer": "0.4.0",
     "conf": "6.2.4",
     "express": "4.17.1",
     "express-pino-logger": "6.0.0",
@@ -43,8 +44,7 @@
     "pino-pretty": "5.1.2",
     "reflect-metadata": "0.1.13",
     "sharp": "0.28.3",
-    "sqlite3": "5.0.2",
-    "typeorm": "0.2.25",
+    "typeorm": "0.2.36",
     "uuid": "8.2.0",
     "yargs": "15.3.1"
   },

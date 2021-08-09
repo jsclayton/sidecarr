@@ -1,6 +1,5 @@
 import { WebClient, WebAPICallResult } from '@slack/web-api';
 import { Payload } from '../plex/models/webhooks';
-import { Message } from '../models/database/slack';
 import { URL } from '../constants';
 import config from '../config';
 
@@ -89,8 +88,6 @@ export class WebhookMessage {
   async post(channel: string) {
 
     const result = await slack.chat.postMessage({ text: '', ...this, channel }) as ChatPostMessageResult;
-    // const message = Message.create(result);
-    // await message.save();
   }
 }
 
