@@ -25,7 +25,7 @@ export interface ServerConfig {
 
 export interface SlackConfig {
 
-  readonly token?: string;
+  readonly webhookUrl?: string;
 }
 
 const config: Config = {
@@ -40,7 +40,7 @@ const config: Config = {
   },
 
   slack: {
-    get token() { return  process.env.SIDECARR_SLACK_TOKEN || file.get('slack.token'); }
+    get webhookUrl() { return process.env.SIDECARR_SLACK_WEBHOOK_URL || file.get('slack.webhookUrl'); }
   }
 }
 export default config;

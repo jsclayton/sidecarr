@@ -1,14 +1,12 @@
-import { WebClient, WebAPICallResult } from '@slack/web-api';
+import { IncomingWebhook } from '@slack/webhook';
 import { Payload } from '../plex/models/webhooks';
 import { URL } from '../constants';
 import config from '../config';
 
-const slack = new WebClient(config.slack?.token);
-
-interface ChatPostMessageResult extends WebAPICallResult {
-  channel: string;
-  ts: string
-};
+let webhook: IncomingWebhook;
+if (config.slack?.webhookUrl) {
+  webhook = new IncomingWebhook(config.slack.webhookUrl);
+}
 
 export class WebhookMessage {
 
@@ -42,12 +40,11 @@ export class WebhookMessage {
           imageElement,
           {
             type: 'mrkdwn',
-            text: `*${payload.account?.title}* ${this.formatEvent(payload.event)} on *${payload.player?.title}*`
+            text: `*${payload.account?.title}* ${this.formatEvent(payload.event)} on *${payload.player?.title}* from *${payload.server?.title}*`
           }
         ].filter(Boolean)
       }
     ]
-    this.username = payload.server?.title
   }
 
   static fromPayload(payload: Payload): WebhookMessage | undefined {
@@ -79,16 +76,14 @@ export class WebhookMessage {
 
   private formatTitle(payload: Payload): string {
 
-    const { metadata, server } = payload;
+    const { metadata } = payload;
     const title = metadata?.type === 'episode' ? metadata.grandparentTitle : metadata?.title;
     const subtitle = metadata?.type === 'episode' ? metadata.title : metadata?.tagline;
     return `*${title}*\n${subtitle}`;
   }
 
-  async post(channel: string) {
+  async post() {
 
-    await slack.chat.postMessage({ text: '', ...this, channel }) as ChatPostMessageResult;
+    await webhook?.send({ text: '', ...this });
   }
 }
-
-export default slack;

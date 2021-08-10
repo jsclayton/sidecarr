@@ -11,7 +11,7 @@ mq.subscribe('Scrobble to Slack', 'plex:media:scrobble', async (data) => {
 
   const payload = data as Payload;
   const message = WebhookMessage.fromPayload(payload);
-  await message?.post('plex');
+  await message?.post();
 });
 
 export default [
