@@ -44,7 +44,6 @@
     "pino-pretty": "5.1.2",
     "reflect-metadata": "0.1.13",
     "sharp": "0.28.3",
-    "typeorm": "0.2.36",
     "uuid": "8.2.0",
     "yargs": "15.3.1"
   },

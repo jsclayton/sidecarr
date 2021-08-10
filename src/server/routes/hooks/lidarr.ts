@@ -4,7 +4,6 @@ import { Request, Response } from 'express';
 
 interface LidarrPayload {
   eventType: string;
-  isUpgrade?: boolean;
   artist?: {
     name: string;
     path: string;

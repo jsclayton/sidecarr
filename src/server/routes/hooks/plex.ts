@@ -4,17 +4,12 @@ import asyncHandler from '../../../server/asyncHandler';
 import { WebhookMessage } from '../../../services/slack';
 import { Payload } from '../../../plex/models/webhooks';
 import * as mq from '../../../services/messaging';
-import log from '../../../log';
-import PQueue from 'p-queue';
 
 const upload = multer();
-
-const scrobbleQueue = new PQueue({ concurrency: 1 });
 
 mq.subscribe('Scrobble to Slack', 'plex:media:scrobble', async (data) => {
 
   const payload = data as Payload;
-
   const message = WebhookMessage.fromPayload(payload);
   await message?.post('plex');
 });
@@ -27,10 +22,9 @@ export default [
     if (!body.payload) {
       return res.sendStatus(200);
     }
+
     const payload = Payload.parse(body.payload);
-
     req.log.debug({ payload }, `Plex ${payload.event} (${payload.account?.title}): ${payload.metadata?.title}`);
-
     mq.publish(`plex:${payload.event.replace('.', ':')}`, payload)
 
     res.sendStatus(200);

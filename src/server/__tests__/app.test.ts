@@ -16,5 +16,9 @@ describe('app', () => {
     await request(app)
       .post('/hooks/radarr')
       .expect(200);
+
+    await request(app)
+      .post('/hooks/lidarr')
+      .expect(200);
   });
 });

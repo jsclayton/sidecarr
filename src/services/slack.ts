@@ -87,7 +87,7 @@ export class WebhookMessage {
 
   async post(channel: string) {
 
-    const result = await slack.chat.postMessage({ text: '', ...this, channel }) as ChatPostMessageResult;
+    await slack.chat.postMessage({ text: '', ...this, channel }) as ChatPostMessageResult;
   }
 }
 
