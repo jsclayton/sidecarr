@@ -1,5 +1,9 @@
 # Sidecarr
 
+<div align="center">
+	<img alt="Sidecarr" height="150" src=".github/img/logo.png" width="150" />
+</div>
+
 Sidecarr lives alongside your Plex Media Server and automation tools to help curate your media collection.
 
 - Integrates with [Radarr](https://radarr.video/), [Sonarr](https://sonarr.tv/), and [Lidarr](https://lidarr.audio/)
